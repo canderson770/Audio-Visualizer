@@ -354,8 +354,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   band: 5
-  minScale: 2.5
-  scaleMultiplier: 1.5
+  minScale: 2
+  scaleMultiplier: 1
   useBuffer: 0
 --- !u!23 &85561448
 MeshRenderer:
@@ -536,8 +536,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   band: 7
-  minScale: 2.5
-  scaleMultiplier: 1.5
+  minScale: 2
+  scaleMultiplier: 1
   useBuffer: 0
 --- !u!23 &356906950
 MeshRenderer:
@@ -1082,8 +1082,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   band: 6
-  minScale: 2.5
-  scaleMultiplier: 1.5
+  minScale: 2
+  scaleMultiplier: 1
   useBuffer: 0
 --- !u!23 &823138085
 MeshRenderer:
@@ -1180,8 +1180,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   band: 8
-  minScale: 2.5
-  scaleMultiplier: 1.5
+  minScale: 2
+  scaleMultiplier: 1
   useBuffer: 0
 --- !u!23 &956859782
 MeshRenderer:
@@ -1340,8 +1340,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   band: 1
-  minScale: 2.5
-  scaleMultiplier: 1.5
+  minScale: 2
+  scaleMultiplier: 1
   useBuffer: 0
 --- !u!23 &977971242
 MeshRenderer:
@@ -1636,8 +1636,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   band: 3
-  minScale: 2.5
-  scaleMultiplier: 1.5
+  minScale: 2
+  scaleMultiplier: 1
   useBuffer: 0
 --- !u!23 &1107370735
 MeshRenderer:
@@ -5606,8 +5606,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   band: 2
-  minScale: 2.5
-  scaleMultiplier: 1.5
+  minScale: 2
+  scaleMultiplier: 1
   useBuffer: 0
 --- !u!23 &1939440780
 MeshRenderer:
@@ -5845,8 +5845,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   band: 4
-  minScale: 2.5
-  scaleMultiplier: 1.5
+  minScale: 2
+  scaleMultiplier: 1
   useBuffer: 0
 --- !u!23 &2025863643
 MeshRenderer:

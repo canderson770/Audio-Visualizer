@@ -107,7 +107,7 @@ public class CreateVisualizer : MonoBehaviour
         for (int i = 0; i < 512; i++)
         {
             float vertical = Mathf.Clamp(AudioVisualizer.samples[i] * scaleMultiplier + minScale, 0, maxScale);
-            float randomNum = Random.Range(0, vertical/10);
+            float randomNum = Random.Range(-vertical / 10, vertical / 10);
 
             if (prefabs[i] != null)
                 prefabs[i].transform.localScale = new Vector3(1, vertical + randomNum, 1);

@@ -42,11 +42,26 @@ public class AudioFinderURL : MonoBehaviour
             StartCoroutine(GetAudio(index));
         }
 
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            if (source.isPlaying)
+            {
+                source.time = Mathf.Clamp(source.time + 10, 0, source.clip.length);
+            }
+        }
+        else if (Input.GetKeyDown(KeyCode.J))
+        {
+            if (source.isPlaying)
+            {
+                source.time = Mathf.Clamp(source.time - 10, 0, source.clip.length);
+            }
+        }
+
         if (timeText != null && source.clip != null)
             timeText.text = ((int)(source.time / 60)).ToString("0") + ":" + ((int)(source.time % 60)).ToString("00") + " / " +
                 ((int)(source.clip.length / 60)).ToString("0") + ":" + ((int)(source.clip.length % 60)).ToString("00");
 
-        if (Input.GetButtonDown("Jump"))
+        if (Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.K))
         {
             if (source.isPlaying)
             {
@@ -116,6 +131,7 @@ public class AudioFinderURL : MonoBehaviour
         {
             if (source.clip.loadState == AudioDataLoadState.Loaded)
             {
+                source.time = 0;
                 source.Play();
             }
         }
@@ -130,7 +146,9 @@ public class AudioFinderURL : MonoBehaviour
 
     private IEnumerator BufferNextSong()
     {
-        yield return new WaitForSeconds(source.clip.length + .05f);
+        while (source.time < source.clip.length)
+            yield return new WaitForEndOfFrame();
+
         source.Stop();
         index = (index + 1) % filePaths.Length;
         StartCoroutine(GetAudio(index));
