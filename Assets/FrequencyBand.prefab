@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 65622029156830702}
   - component: {fileID: 23490928672847190}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: FrequencyBand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

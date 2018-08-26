@@ -1,61 +1,40 @@
 using System.Collections;
 using System.IO;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using SFB;
 
 [RequireComponent(typeof(AudioSource))]
 public class AudioFinderURL : MonoBehaviour
 {
+    private AudioSource source;
+    private WWW www;
+    private int index = 0;
+
     public string path;
     public string[] filePaths;
-    public enum AudioFileType { OGG, MP3 };
+    public enum AudioFileType { OGG, MP3, WAV };
     public AudioFileType fileType = AudioFileType.OGG;
     public Text songText;
     public Text timeText;
     public ParticleSystem ps;
 
-    AudioSource source;
-    WWW www;
-    int index = 0;
 
-    void Start()
+
+    private void Start()
     {
         source = GetComponent<AudioSource>();
-        filePaths = Directory.GetFiles(path, "*." + fileType.ToString());
 
-        if (filePaths.Length > 0)
-            StartCoroutine(GetAudio(index));
+        if (!string.IsNullOrEmpty(path))
+            StartSong();
     }
 
-    IEnumerator GetAudio(int index)
+    private void Update()
     {
-        WWW www = new WWW(filePaths[index]);
-        yield return www;
+        if (filePaths.Length <= 0)
+            return;
 
-        if (www.error != null && www.error != "")
-            Debug.Log(www.error);
 
-        source.clip = www.GetAudioClip(false, true);
-
-        if (source.clip != null)
-        {
-            if (source.clip.loadState == AudioDataLoadState.Loaded)
-            {
-                source.Play();
-            }
-        }
-
-        if (songText != null)
-        {
-            songText.text = Path.GetFileNameWithoutExtension(filePaths[index]);
-        }
-
-        StartCoroutine(BufferNextSong());
-    }
-
-    void Update()
-    {
         if (Input.GetKeyDown(KeyCode.N))
         {
             StopAllCoroutines();
@@ -64,7 +43,7 @@ public class AudioFinderURL : MonoBehaviour
         }
 
         if (timeText != null && source.clip != null)
-            timeText.text = ((int)(source.time / 60)).ToString("0") + ":" + ((int)(source.time % 60)).ToString("00") + " / " + 
+            timeText.text = ((int)(source.time / 60)).ToString("0") + ":" + ((int)(source.time % 60)).ToString("00") + " / " +
                 ((int)(source.clip.length / 60)).ToString("0") + ":" + ((int)(source.clip.length % 60)).ToString("00");
 
         if (Input.GetButtonDown("Jump"))
@@ -88,7 +67,68 @@ public class AudioFinderURL : MonoBehaviour
         }
     }
 
-    IEnumerator BufferNextSong()
+
+
+    public void ChooseFolder()
+    {
+        string[] paths = StandaloneFileBrowser.OpenFolderPanel("Select Folder", "", true);
+
+        if (paths.Length == 0)
+            return;
+
+        path = "";
+        foreach (var p in paths)
+        {
+            path += p;
+        }
+        path += @"\";
+
+        StartSong();
+    }
+
+    public void StartSong()
+    {
+        try
+        {
+            filePaths = Directory.GetFiles(path, "*." + fileType.ToString());
+        }
+        catch { }
+
+        if (filePaths.Length > 0)
+            StartCoroutine(GetAudio(index));
+    }
+
+
+
+    private IEnumerator GetAudio(int index)
+    {
+        www = new WWW(filePaths[index]);
+        yield return www;
+
+        if (www.error != null && www.error != "")
+            Debug.Log(www.error);
+
+        //source.clip = WWWAudioExtensions.GetAudioClip(www, false, true, AudioType.MPEG);
+        source.clip = www.GetAudioClip(false, true, AudioType.OGGVORBIS);
+
+
+        if (source.clip != null)
+        {
+            if (source.clip.loadState == AudioDataLoadState.Loaded)
+            {
+                source.Play();
+            }
+        }
+
+        if (songText != null)
+        {
+            songText.text = Path.GetFileNameWithoutExtension(filePaths[index]);
+        }
+
+        StartCoroutine(BufferNextSong());
+    }
+
+    private IEnumerator BufferNextSong()
     {
         yield return new WaitForSeconds(source.clip.length + .05f);
         source.Stop();
