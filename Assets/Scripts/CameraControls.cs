@@ -4,30 +4,27 @@ using UnityEngine;
 
 public class CameraControls : MonoBehaviour
 {
+    private float speedMult = 1;
+    private Vector3 originPosition;
+    private Vector3 originEulerAngles;
+
     public Transform pivot;
     public float speed = 1;
     public float speedMultiplier = 3;
-    float speedMult = 1;
 
-    Vector3 originPosition;
-    Vector3 originEulerAngles;
-
-    void Start()
+    private void Start()
     {
         originPosition = transform.localPosition;
         originEulerAngles = transform.localEulerAngles;
     }
 
-    void Update()
+    private void Update()
     {
-        if (pivot != null)
-            transform.LookAt(pivot);
-
-        if(Input.GetKeyDown(KeyCode.LeftShift))
+        if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             speedMult = speedMultiplier;
         }
-        else if(Input.GetKeyUp(KeyCode.LeftShift))
+        else if (Input.GetKeyUp(KeyCode.LeftShift))
         {
             speedMult = 1;
         }
@@ -59,10 +56,13 @@ public class CameraControls : MonoBehaviour
             transform.Translate(Vector3.back * speed * speedMult);
         }
 
-        if(Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.R))
         {
             transform.localPosition = originPosition;
             transform.localEulerAngles = originEulerAngles;
         }
+
+        if (pivot != null)
+            transform.LookAt(pivot);
     }
 }

@@ -9,7 +9,7 @@ namespace CustomEditors
         public static void ResetScaleChildren()
         {
             if (Selection.activeGameObject == null) return;
-            RectTransform[] transforms = Selection.activeGameObject.GetComponentsInChildren<RectTransform>();
+            RectTransform[] transforms = Selection.activeGameObject.GetComponentsInChildren<RectTransform>(true);
 
             Undo.RecordObjects(transforms, "Reset Scale of Children");
             foreach (RectTransform rect in transforms)
@@ -23,7 +23,7 @@ namespace CustomEditors
         public static void ResetValues()
         {
             if (Selection.activeGameObject == null) return;
-            RectTransform[] transforms = Selection.activeGameObject.GetComponentsInChildren<RectTransform>();
+            RectTransform[] transforms = Selection.activeGameObject.GetComponentsInChildren<RectTransform>(true);
 
             Undo.RecordObjects(transforms, "Reset Pos Z of Children");
             foreach (RectTransform rect in transforms)

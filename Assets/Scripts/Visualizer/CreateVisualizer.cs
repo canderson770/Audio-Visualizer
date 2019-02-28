@@ -5,8 +5,9 @@ public class CreateVisualizer : MonoBehaviour
     private GameObject[] prefabs = new GameObject[512];
     private float rotationAmount;
 
-    [Header("Ring Height Settings")]
+    [SerializeField] private VisualizerVars variables;
 
+    [Header("Ring Height Settings")]
     [Tooltip("Reference to frequency band prefab")]
     public GameObject prefab;
 
@@ -70,6 +71,11 @@ public class CreateVisualizer : MonoBehaviour
     [Tooltip("Frequency to respond to")]
     [Range(1, 8)] public int psBand = 1;
 
+    private void OnValidate()
+    {
+        if (variables == null)
+            variables = (VisualizerVars)Resources.Load("VisualizerVars", typeof(VisualizerVars));
+    }
 
     private void Start()
     {
@@ -101,10 +107,12 @@ public class CreateVisualizer : MonoBehaviour
 
     private void Update()
     {
+        if (variables == null) return;
+
         //  ring vertical scale
         for (int i = 0; i < 512; i++)
         {
-            float vertical = Mathf.Clamp(AudioVisualizer.samples[i] * scaleMultiplier + minScale, 0, maxScale);
+            float vertical = Mathf.Clamp(variables.samples[i] * scaleMultiplier + minScale, 0, maxScale);
             float randomNum = Random.Range(-vertical / 10, vertical / 10);
 
             if (prefabs[i] != null)
@@ -112,20 +120,20 @@ public class CreateVisualizer : MonoBehaviour
         }
 
         //  ring horizontal cale
-        transform.localScale = (Vector3.one * AudioVisualizer.samples[scaleBand - 1] * ringScaleMultiplier) + Vector3.one;
+        transform.localScale = (Vector3.one * variables.samples[scaleBand - 1] * ringScaleMultiplier) + Vector3.one;
 
         //  light intensity
         if (thisLight != null)
-            thisLight.intensity = AudioVisualizer.bandBuffer[lightIntensityBand - 1] * lightMultiplier;
+            thisLight.intensity = variables.bandBuffer[lightIntensityBand - 1] * lightMultiplier;
 
         //  camera zoom
-        thisCamera.fieldOfView = (AudioVisualizer.samples[cameraBand - 1] * -cameraMultiplier) + 60;
+        thisCamera.fieldOfView = (variables.samples[cameraBand - 1] * -cameraMultiplier) + 60;
 
         //  particle effects
         if (ps != null)
         {
             ParticleSystem.NoiseModule noiseModule = ps.noise;
-            noiseModule.strength = AudioVisualizer.bandBuffer[psBand - 1] * psIntensity + 1;
+            noiseModule.strength = variables.bandBuffer[psBand - 1] * psIntensity + 1;
         }
     }
 }

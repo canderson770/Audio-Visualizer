@@ -2,11 +2,11 @@ using System.Collections;
 using System.IO;
 using UnityEngine;
 using SFB;
+using System.Linq;
 
 [RequireComponent(typeof(AudioSource))]
 public class AudioFinderURL : MusicLoader
 {
-    private WaitForFixedUpdate waitForFixedUpdate = new WaitForFixedUpdate();
     private AudioSource source;
     private WWW www;
     private int index = 0;
@@ -14,9 +14,8 @@ public class AudioFinderURL : MusicLoader
     [ReadOnly] [SerializeField] private string path;
     [ReadOnly] [SerializeField] private string[] songsList;
 
-    public enum AudioFileType { OGG, MP3, WAV };
-    public AudioFileType fileType = AudioFileType.OGG;
-
+    //public enum AudioFileType { OGG, WAV };
+    //public AudioFileType fileType = AudioFileType.OGG;
 
     private void Start()
     {
@@ -34,6 +33,12 @@ public class AudioFinderURL : MusicLoader
         {
             StopAllCoroutines();
             index = (index + 1) % songsList.Length;
+            StartCoroutine(GetAudio(index));
+        }
+        else if (Input.GetKeyDown(KeyCode.B))
+        {
+            StopAllCoroutines();
+            if (--index < 0) index = songsList.Length;
             StartCoroutine(GetAudio(index));
         }
 
@@ -70,22 +75,38 @@ public class AudioFinderURL : MusicLoader
 
     public void ChooseFolder()
     {
-        string[] paths = StandaloneFileBrowser.OpenFolderPanel("Select Folder", "", false);
-        if (paths.Length == 0) return;
+        ChooseSongs();
+        //string[] paths = StandaloneFileBrowser.OpenFolderPanel("Select Folder", "", false);
 
-        path = "";
-        foreach (var p in paths)
-            path += p;
-        path += @"\";
+        //if (paths.Length == 0) return;
 
-        StartSong();
+        //path = "";
+        //foreach (var p in paths)
+        //    path += p;
+        //path += @"\";
+
+        //StartSong();
+    }
+
+    public void ChooseSongs()
+    {
+        var extensions = new[] {
+                new ExtensionFilter("Sound Files", "ogg", "wav" ),
+                new ExtensionFilter("All Files", "*" ),
+            };
+        songsList = (StandaloneFileBrowser.OpenFilePanel("Open File", "", extensions, true));
+
+        if (songsList.Length > 0)
+            StartCoroutine(GetAudio(index));
     }
 
     public void StartSong()
     {
         try
         {
-            songsList = Directory.GetFiles(path, "*." + fileType.ToString());
+            var wavs = Directory.GetFiles(path, "*.WAV");
+            var oggs = Directory.GetFiles(path, "*.OGG");
+            songsList = wavs.Concat(oggs).ToArray();
         }
         catch { }
 
@@ -97,14 +118,14 @@ public class AudioFinderURL : MusicLoader
     {
         if (source == null) yield break;
 
-        www = new WWW(songsList[index]);
+        if (index >= 0 && index < songsList.Length)
+            www = new WWW(songsList[index]);
         yield return www;
 
         if (www.error != null && www.error != "")
             Debug.Log(www.error);
 
-        //source.clip = WWWAudioExtensions.GetAudioClip(www, false, true, AudioType.MPEG);
-        source.clip = www.GetAudioClip(false, true, AudioType.OGGVORBIS);
+        source.clip = www.GetAudioClip(false, true);
 
         if (source.clip == null) yield break;
 
@@ -127,8 +148,8 @@ public class AudioFinderURL : MusicLoader
     private IEnumerator BufferNextSong()
     {
         //  if still playing song, wait
-        while (source.time < source.clip.length)
-            yield return waitForFixedUpdate;
+        while (System.Math.Round(source.time, 2) < System.Math.Round(source.clip.length, 2))
+            yield return null;
 
         //  go to next song
         source.Stop();
