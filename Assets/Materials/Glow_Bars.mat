@@ -6,9 +6,9 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: RedBarsGlow
-  m_Shader: {fileID: 4800000, guid: ce4a6819c3fc00c4fb33edd429307c8f, type: 3}
-  m_ShaderKeywords: _CULLMODE_BACK _EMISSION
+  m_Name: Glow_Bars
+  m_Shader: {fileID: 4800000, guid: 1d27c4b59e3ceb245af7758dd8b1abbd, type: 3}
+  m_ShaderKeywords: _CULLMODE_BACK _EMISSION _USEALPHA_ON
   m_LightmapFlags: 1
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -54,6 +54,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _RampTex:
+        m_Texture: {fileID: 2800000, guid: 630eb33a015befc4383c7d13f723cdc6, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Floats:
     - _BumpScale: 1
     - _CullMode: 2
@@ -69,10 +73,12 @@ Material:
     - _Parallax: 0.02
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
+    - _Speed: 4
     - _SrcBlend: 1
     - _UVSec: 0
+    - _UseAlpha: 1
     - _ZTest: 4
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 0, g: 1, b: 1, a: 1}
-    - _EmissionColor: {r: 0.26205668, g: 0.9632353, b: 0.9632353, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}

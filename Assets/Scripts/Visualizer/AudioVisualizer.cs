@@ -10,28 +10,29 @@ public class AudioVisualizer : MonoBehaviour
     public static float[] samples = new float[512];
     public static float[] freqBand = new float[8];
     public static float[] bandBuffer = new float[8];
-    float[] bufferDecrease = new float[8];
+    private float[] bufferDecrease = new float[8];
+
     public float decrease1 = .005f;
     public float decrease2 = 1.2f;
 
-    void Start()
+    private void Start()
     {
         source = GetComponent<AudioSource>();
     }
 
-    void Update()
+    private void Update()
     {
         GetSpectrumAudioSource();
         GetFrequencyBands();
         BandBuffer();
     }
 
-    void GetSpectrumAudioSource()
+    private void GetSpectrumAudioSource()
     {
         source.GetSpectrumData(samples, 0, FFTWindow.Blackman);
     }
 
-    void BandBuffer()
+    private void BandBuffer()
     {
         for (int i = 0; i < 8; i++)
         {
@@ -49,10 +50,9 @@ public class AudioVisualizer : MonoBehaviour
         }
     }
 
-    void GetFrequencyBands()
+    private void GetFrequencyBands()
     {
         int count = 0;
-
         for (int i = 0; i < 8; i++)
         {
             float average = 0;
@@ -68,7 +68,6 @@ public class AudioVisualizer : MonoBehaviour
             }
 
             average /= count;
-
             freqBand[i] = average * 10;
         }
     }

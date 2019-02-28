@@ -1,11 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class FreqBandCube : MonoBehaviour
 {
     private float value;
-
 
     [Tooltip("Frequency to respond to")]
     [Range(1, 8)] public int band = 1;
@@ -18,7 +15,6 @@ public class FreqBandCube : MonoBehaviour
 
     [Tooltip("Smooth motion with buffer?")]
     public bool useBuffer = false;
-
 
     private void Update()
     {
