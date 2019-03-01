@@ -75,17 +75,16 @@ public class AudioFinderURL : MusicLoader
 
     public void ChooseFolder()
     {
-        ChooseSongs();
-        //string[] paths = StandaloneFileBrowser.OpenFolderPanel("Select Folder", "", false);
+        string[] paths = StandaloneFileBrowser.OpenFolderPanel("Select Folder", "", false);
 
-        //if (paths.Length == 0) return;
+        if (paths.Length == 0) return;
 
-        //path = "";
-        //foreach (var p in paths)
-        //    path += p;
-        //path += @"\";
+        path = "";
+        foreach (var p in paths)
+            path += p;
+        path += @"\";
 
-        //StartSong();
+        StartSong();
     }
 
     public void ChooseSongs()
