@@ -5,12 +5,6 @@ using UnityEngine;
 /// </summary>
 public class QuitGame : MonoBehaviour
 {
-    private void Update()
-    {
-        if (Input.GetButtonDown("Cancel"))
-            Quit();
-    }
-
     /// <summary>
     /// Quits application
     /// </summary>

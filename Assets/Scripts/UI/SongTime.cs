@@ -2,11 +2,11 @@ public class SongTime : SetText
 {
     private void OnEnable()
     {
-        MusicLoader.SongTime += SetTime;
+        MusicPlayer.SongTime += SetTime;
     }
     private void OnDisable()
     {
-        MusicLoader.SongTime -= SetTime;
+        MusicPlayer.SongTime -= SetTime;
     }
 
     private void SetTime(float currentTime, float maxTime)

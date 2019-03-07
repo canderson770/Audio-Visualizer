@@ -1,18 +1,13 @@
 using System.Runtime.InteropServices;
 using System.Text;
 
-public class MusicPlayer
+public class MusicPlayerWindows
 {
     private string Pcommand;
     public bool isOpen;
 
     [DllImport("winmm.dll")]
     private static extern long mciSendString(string strCommand, StringBuilder strReturn, int iReturnLength, int bla);
-
-    public MusicPlayer()
-    {
-
-    }
 
     /// <SUMMARY>
     /// Stops currently playing audio file

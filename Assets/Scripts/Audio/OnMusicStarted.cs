@@ -7,11 +7,11 @@ public class OnMusicStarted : MonoBehaviour
 
     private void OnEnable()
     {
-        MusicLoader.SongPaused += OnStarted;
+        MusicPlayer.SongPaused += OnStarted;
     }
     private void OnDisable()
     {
-        MusicLoader.SongPaused -= OnStarted;
+        MusicPlayer.SongPaused -= OnStarted;
     }
 
     private void OnStarted(bool paused)

@@ -2,11 +2,11 @@ public class SongName : SetText
 {
     private void OnEnable()
     {
-        MusicLoader.SongName += SetSongName;
+        MusicPlayer.SongName += SetSongName;
     }
     private void OnDisable()
     {
-        MusicLoader.SongName -= SetSongName;
+        MusicPlayer.SongName -= SetSongName;
     }
 
     private void SetSongName(string name)

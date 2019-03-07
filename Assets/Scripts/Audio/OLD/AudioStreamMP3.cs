@@ -14,7 +14,7 @@ public class AudioStreamMP3 : MonoBehaviour
     public Text timeText;
     public ParticleSystem ps;
 
-    MusicPlayer musicPlayer = new MusicPlayer();
+    MusicPlayerWindows musicPlayer = new MusicPlayerWindows();
     AudioSource source;
     int index = 0;
 
