@@ -5,72 +5,19 @@ using SFB;
 using System.Linq;
 
 [RequireComponent(typeof(AudioSource))]
-public class AudioFinderURL : MusicLoader
+public class AudioFinderURL : MusicPlayer
 {
-    private AudioSource source;
     private WWW www;
-    private int index = 0;
 
     [ReadOnly] [SerializeField] private string path;
     [ReadOnly] [SerializeField] private string[] songsList;
 
-    //public enum AudioFileType { OGG, WAV };
-    //public AudioFileType fileType = AudioFileType.OGG;
-
     private void Start()
     {
-        source = GetComponent<AudioSource>();
+        songAmount = songsList.Length;
 
         if (!string.IsNullOrEmpty(path))
             StartSong();
-    }
-
-    private void Update()
-    {
-        if (songsList.Length <= 0) return;
-
-        if (Input.GetKeyDown(KeyCode.N))
-        {
-            StopAllCoroutines();
-            index = (index + 1) % songsList.Length;
-            StartCoroutine(GetAudio(index));
-        }
-        else if (Input.GetKeyDown(KeyCode.B))
-        {
-            StopAllCoroutines();
-            if (--index < 0) index = songsList.Length;
-            StartCoroutine(GetAudio(index));
-        }
-
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            if (source.isPlaying)
-                source.time = Mathf.Clamp(source.time + 10, 0, source.clip.length);
-        }
-        else if (Input.GetKeyDown(KeyCode.J))
-        {
-            if (source.isPlaying)
-                source.time = Mathf.Clamp(source.time - 10, 0, source.clip.length);
-        }
-
-        //  set time text
-        if (source?.clip ?? false)
-            SendSongTime(source.time, source.clip.length);
-
-        //  pause/unpause
-        if (Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.K))
-        {
-            if (source.isPlaying)
-            {
-                source.Pause();
-                SendSongPaused(true);
-            }
-            else
-            {
-                source.UnPause();
-                SendSongPaused(false);
-            }
-        }
     }
 
     public void ChooseFolder()
@@ -89,14 +36,16 @@ public class AudioFinderURL : MusicLoader
 
     public void ChooseSongs()
     {
-        var extensions = new[] {
-                new ExtensionFilter("Sound Files", "ogg", "wav" ),
-                new ExtensionFilter("All Files", "*" ),
-            };
-        songsList = (StandaloneFileBrowser.OpenFilePanel("Open File", "", extensions, true));
+        var extensions = new[]
+        {
+            new ExtensionFilter("Sound Files", "ogg", "wav" ),
+            new ExtensionFilter("All Files", "*" ),
+        };
 
-        if (songsList.Length > 0)
-            StartCoroutine(GetAudio(index));
+        songsList = (StandaloneFileBrowser.OpenFilePanel("Open File", "", extensions, true));
+        songAmount = songsList.Length;
+
+        StartCoroutine(GetAudio(index));
     }
 
     public void StartSong()
@@ -109,19 +58,18 @@ public class AudioFinderURL : MusicLoader
         }
         catch { }
 
-        if (songsList.Length > 0)
-            StartCoroutine(GetAudio(index));
+        StartCoroutine(GetAudio(index));
     }
 
-    private IEnumerator GetAudio(int index)
+    protected override IEnumerator GetAudio(int index)
     {
-        if (source == null) yield break;
+        if (source == null || songsList.Length <= 0) yield break;
 
-        if (index >= 0 && index < songsList.Length)
+        if (index >= 0 && index < songAmount)
             www = new WWW(songsList[index]);
         yield return www;
 
-        if (www.error != null && www.error != "")
+        if (!string.IsNullOrEmpty(www?.error))
             Debug.Log(www.error);
 
         source.clip = www.GetAudioClip(false, true);
@@ -135,24 +83,13 @@ public class AudioFinderURL : MusicLoader
         }
 
         //  Set song name
-        SendSongName(Path.GetFileNameWithoutExtension(songsList[index]));
+        if (index >= 0 && index < songAmount)
+            SendSongName(Path.GetFileNameWithoutExtension(songsList[index]));
 
         //  Start particles
         SendSongPaused(false);
 
         //  Check for next song
         StartCoroutine(BufferNextSong());
-    }
-
-    private IEnumerator BufferNextSong()
-    {
-        //  if still playing song, wait
-        while (System.Math.Round(source.time, 2) < System.Math.Round(source.clip.length, 2))
-            yield return null;
-
-        //  go to next song
-        source.Stop();
-        index = (index + 1) % songsList.Length;
-        StartCoroutine(GetAudio(index));
     }
 }

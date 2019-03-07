@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Events;
 
 [RequireComponent(typeof(AudioSource))]
 public class AudioVisualizer : MonoBehaviour
@@ -7,12 +6,8 @@ public class AudioVisualizer : MonoBehaviour
     private AudioSource source;
 
     [SerializeField] private VisualizerVars variables;
-
     [SerializeField] private float decrease1 = .005f;
     [SerializeField] private float decrease2 = 1.2f;
-
-    [Header("Debug")]
-    public bool showDebug = false;
 
     private void Awake()
     {
@@ -82,25 +77,5 @@ public class AudioVisualizer : MonoBehaviour
             average /= count;
             variables.freqBand[i] = average * 10;
         }
-    }
-
-    private Rect windowRect = new Rect(20, 20, 200, 150);
-    private void OnGUI()
-    {
-        if (showDebug == false) return;
-
-        // Register the window. Notice the 3rd parameter
-        windowRect = GUI.Window(0, windowRect, DoMyWindow, "Debug");
-    }
-
-    // Make the contents of the window
-    private void DoMyWindow(int windowID)
-    {
-        GUILayout.Label("Source: " + (source ? "True" : "False"));
-        if (variables == null) return;
-        GUILayout.Label("Samples: " + variables.samples[0].ToString());
-        GUILayout.Label("Frequency: " + variables.freqBand[0].ToString());
-        GUILayout.Label("Band Buffer: " + variables.bandBuffer[0].ToString());
-        GUILayout.Label("Buffer Decrease: " + variables.bufferDecrease[0].ToString());
     }
 }

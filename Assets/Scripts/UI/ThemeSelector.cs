@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
@@ -18,7 +19,7 @@ public class ThemeSelector : MonoBehaviour
     {
         if (events.Count < value) return;
         events[value].Invoke();
-        EventSystem.current.SetSelectedGameObject(null);
+        StartCoroutine(Deselect());
     }
 
     private void Update()
@@ -35,5 +36,11 @@ public class ThemeSelector : MonoBehaviour
         {
             dropdown.value = 2;
         }
+    }
+
+    private IEnumerator Deselect()
+    {
+        yield return null;
+        EventSystem.current.SetSelectedGameObject(null);
     }
 }

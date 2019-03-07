@@ -13,11 +13,11 @@ public class EnableParticles : MonoBehaviour
 
     private void OnEnable()
     {
-        MusicLoader.SongPaused += Enable;
+        MusicPlayer.SongPaused += Enable;
     }
     private void OnDisable()
     {
-        MusicLoader.SongPaused -= Enable;
+        MusicPlayer.SongPaused -= Enable;
     }
 
     private void Enable(bool isPaused)
