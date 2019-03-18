@@ -1,12 +1,19 @@
 using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.Events;
 
 public class ThemeSelector : MonoBehaviour
 {
+    private Dropdown dropdown;
     public List<UnityEvent> events;
+
+    private void Start()
+    {
+        dropdown = GetComponent<Dropdown>();
+    }
 
     public void DROPDOWN_DoEvents(int value)
     {
@@ -19,15 +26,15 @@ public class ThemeSelector : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Keypad1))
         {
-            DROPDOWN_DoEvents(0);
+            dropdown.value = 0;
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Keypad2))
         {
-            DROPDOWN_DoEvents(1);
+            dropdown.value = 1;
         }
         else if (Input.GetKeyDown(KeyCode.Alpha3) || Input.GetKeyDown(KeyCode.Keypad3))
         {
-            DROPDOWN_DoEvents(2);
+            dropdown.value = 2;
         }
     }
 
