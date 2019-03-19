@@ -6,6 +6,12 @@ public class Play_Button : Music_Button
     public Image playImage;
     public Sprite playSprite, pauseSprite;
 
+    private void Awake()
+    {
+        if (pauseSprite != null)
+            playImage.sprite = pauseSprite;
+    }
+
     private void OnEnable()
     {
         MusicPlayer.SongPaused += SwitchSprite;
