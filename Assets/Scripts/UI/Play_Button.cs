@@ -30,13 +30,13 @@ public class Play_Button : Music_Button
 
         if (isPaused)
         {
-            if (pauseSprite != null)
-                playImage.sprite = pauseSprite;
+            if (playSprite != null)
+                playImage.sprite = playSprite;
         }
         else
         {
-            if (playSprite != null)
-                playImage.sprite = playSprite;
+            if (pauseSprite != null)
+                playImage.sprite = pauseSprite;
         }
     }
 }
